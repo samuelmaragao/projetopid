@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<body bgcolor="#FFA500"> 
+<title>Projeto PID para velocidade de um carro</title>
+
+<script>
+
+function calcular (){
+
+		var peso = parseFloat (document.getElementById("peso").value);
+		var potencia = parseFloat (document.getElementById("potencia").value);
+		var aceleracaomaxima = parseFloat (document.getElementById("aceleracaomaxima").value);
+		var velocidadedesejada = parseFloat (document.getElementById("velocidadedesejada").value);
+		var arrasto = parseFloat (document.getElementById("arrasto").value);
+		var atrito = parseFloat (document.getElementById("atrito").value);
+		var areafrontal = parseFloat (document.getElementById("areafrontal").value);
+		var gravidade = parseFloat (document.getElementById("gravidade").value);
+		var velocidadedovento = parseFloat (document.getElementById("velocidadedovento").value);
+		var pressaoatmosferica = parseFloat (document.getElementById("pressaoatmosferica").value);
+		var angulo = parseFloat (document.getElementById("angulo").value);
+		
+		
+		<!-- Fórmulas -->
+
+		var aclive = angulo * 0.0174;
+		var declive = aclive * -1;
+		var velocidadedesejada = velocidadedesejada /3.6;
+		var forcadearrasto = 0.5 * 1.225 * (velocidadedesejada * velocidadedesejada) * arrasto * areafrontal;
+		var forcadeatrito = atrito * peso * 1000 * gravidade;
+		var forcadagravidade = peso * 1000 * gravidade * angulo * 0.01745240643;
+		var velocidadedovento = velocidadedovento / 3.6;
+		var aceleracaomaxima = velocidadedesejada / peso / 1000;
+		var forcatotal = (forcadearrasto) + (forcadeatrito) + (forcadagravidade);
+		var aceleracaonecessaria = forcatotal / peso / 1000;
+		
+		
+		document.getElementById("peso").textContent = peso.toFixed(2);
+		document.getElementById("potencia").textContent = potencia.toFixed(2);
+		document.getElementById("aceleracaomaxima").textContent = aceleracaomaxima.toFixed(2);
+		document.getElementById("velocidadedesejada").textContent = velocidadedesejada.toFixed(2);
+		document.getElementById("arrasto").textContent = arrasto.toFixed(2);
+		document.getElementById("atrito").textContent = atrito.toFixed(2);
+		document.getElementById("areafrontal").textContent = areafrontal.toFixed(2);
+		document.getElementById("gravidade").textContent = gravidade.toFixed(2);
+		document.getElementById("velocidadedovento").textContent = velocidadedovento.toFixed(2);
+		document.getElementById("pressaoatmosferica").textContent = pressaoatmosferica.toFixed(2);
+		document.getElementById("angulo").textContent = angulo.toFixed(2);
+		document.getElementById("resultadoarrasto").textContent = forcadearrasto.toFixed(2) + " N";
+		document.getElementById("resultadoatrito").textContent = forcadeatrito.toFixed(2) + " N";
+		document.getElementById("resultadogravidade").textContent = forcadagravidade.toFixed(1) + " N";
+		document.getElementById("resultadoforcatotal").textContent = forcatotal.toFixed(2) + " N";
+		document.getElementById("resultadoaceleracaonecessaria").textContent = aceleracaonecessaria.toFixed(2) + " m/s²";
+	
+		
+		}
+
+
+function alterar () {
+
+		var peso = parseFloat (document.getElementById("peso").value);
+		var potencia = parseFloat (document.getElementById("potencia").value);
+		var aceleracaomaxima = parseFloat (document.getElementById("aceleracaomaxima").value);
+		var velocidadedesejada = parseFloat (document.getElementById("velocidadedesejada").value);
+		var arrasto = parseFloat (document.getElementById("arrasto").value);
+		var atrito = parseFloat (document.getElementById("atrito").value);
+		var areafrontal = parseFloat (document.getElementById("areafrontal").value);
+		var gravidade = parseFloat (document.getElementById("gravidade").value);
+		var velocidadedovento = parseFloat (document.getElementById("velocidadedovento").value);
+		var pressaoatmosferica = parseFloat (document.getElementById("pressaoatmosferica").value);
+		var angulo = parseFloat (document.getElementById("angulo").value);
+		var erro = parseFloat (document.getElementById("erro").value);
+		var erroacm = parseFloat (document.getElementById("erroacm").value);
+		var taxamudanca = parseFloat (document.getElementById("taxamudanca").value);
+
+		var aclive = angulo * 0.0174;
+		var declive = aclive * -1;
+		var velocidadedesejada = velocidadedesejada /3.6;
+		var forcadearrasto = 0.5 * 1.225 * (velocidadedesejada * velocidadedesejada) * arrasto * areafrontal;
+		var forcadeatrito = atrito * peso * 1000 * gravidade;
+		var forcadagravidade = peso * 1000 * gravidade * angulo * 0.01745240643;
+		var velocidadedovento = velocidadedovento / 3.6;
+		var aceleracaomaxima = velocidadedesejada / peso / 1000;
+		var forcatotal = (forcadearrasto) + (forcadeatrito) + (forcadagravidade);
+		var resultadokp = 0.5 * erro;
+		var resultadoki = 0.1 * erroacm;
+		var resultadokd = 0.2 * taxamudanca;	
+		var resultadout = resultadokp + resultadoki + resultadokd + 1;
+		var aceleracaonecessaria = forcatotal / peso / 1000 - erro;
+	
+
+		document.getElementById("resultadodekp").textContent = resultadokp.toFixed(2);
+		document.getElementById("resultadodeki").textContent = resultadoki.toFixed(2);
+		document.getElementById("resultadodekd").textContent = resultadokd.toFixed(2);
+		document.getElementById("resultadodeut").textContent = resultadout.toFixed(2);
+		document.getElementById("resultadoaceleracaonecessaria").textContent = aceleracaonecessaria.toFixed(2) + " m/s²";	
+}
+
+	
+	function limpar () {
+	var inputs = document.querySelectorAll("input[type= 'number']");
+	inputs.forEach(input => input.value = "");
+
+	var outputs = document.querySelectorAll("#resultadoarrasto, #resultadoatrito, #resultadogravidade, #resultadoforcatotal, #resultadoaceleracaonecessaria, #resultadodekp, #resultadodeki, #resultadodekd, #resultadodeut");
+	outputs.forEach(output => output.textContent = "");	
+
+}
+
+</script>
+
+
+
+</head>	
+<body>
+	<h2> <font face="Arial"> Cálculo para velocidade de um carro </h2> </font>
+	</font>
+
+	<form>
+	<label for="peso">Peso (ton):</label>
+	<input type="number" id="peso"name="Peso (ton)"><br><br>
+	<label for="potencia">Potência (cavalos):</label>
+	<input type="number" id="potencia"name="Potência (cavalos)"><br><br>
+	<label for="aceleracaomaxima">Aceleração máxima (m/s²):</label>
+	<input type="number" id="aceleracaomaxima"name="Aceleração máxima (m/s²)"><br><br>
+	<label for="velocidadedesejada">Velocidade desejada (km/h):</label>
+	<input type="number" id="velocidadedesejada"name="Velocidade desejada (km/h)"><br><br>
+	<label for="arrasto">Arrasto:</label>
+	<input type="number" id="arrasto"name="Arrasto"><br><br>
+	<label for="atrito">Atrito:</label>
+	<input type="number" id="atrito"name="Atrito"><br><br>
+	<label for="areafrontal">Área frontal (m2):</label>
+	<input type="number" id="areafrontal"name="Área frontal (m2)"><br><br>
+	<label for="gravidade">Gravidade (m/s²):</label>
+	<input type="number" id="gravidade"name="Gravidade (m/s²)"><br><br>
+	<label for="velocidadedovento">Velocidade do vento (km/h):</label>
+	<input type="number" id="velocidadedovento"name="Velocidade do vento (km/h)"><br><br>
+	<label for="pressaoatmosferica">Pressão atmosférica (Pa):</label>
+	<input type="number" id="pressaoatmosferica"name="Pressão atmosférica (Pa)"><br><br>
+	<label for="angulo">Ângulo de aclive ou declive (graus):</label>
+	<input type="number" id="angulo"name="Ângulo de aclive ou declive (graus)"><br><br>
+	<input type="button" value="Calcular"onclick=calcular()>
+	<hr>
+	<label for="erro"> Erro: </label>
+	<input type="number" id="erro"name="Erro"><br><br>
+	<label for="erroacm"> Erro acumulado: </label>
+	<input type="number" id="erroacm"name="Erro acumulado"><br><br>
+	<label for="taxamudanca"> Taxa de mudança: </label>
+	<input type="number" id="taxamudanca"name="Taxa de mudança"><br><br>
+	<input type="button" value="Alterar"onclick=alterar()>	
+	<input type="button" value="Limpar"onclick=limpar()>
+	
+	
+	</form>
+
+
+<hr>
+<h2> <font face="Arial"> Resultados obtidos:</h2> </font>
+<p>Força de Arrasto: <span id="resultadoarrasto"></span></p>
+<hr>
+<p>Força de Atrito: <span id="resultadoatrito"></span></p>
+<hr>
+<p>Força de Gravidade: <span id="resultadogravidade"></span></p>
+<hr>
+<p>Força total: <span id="resultadoforcatotal"></span></p>
+<hr>
+<p>Aceleração Necessaria: <span id="resultadoaceleracaonecessaria"></span></p>
+<hr>
+<p>KP: <span id="resultadodekp"></span></p>
+<hr>
+<p>KI: <span id="resultadodeki"></span></p>
+<hr>
+<p>KD: <span id="resultadodekd"></span></p>
+<hr>
+<p>uT: <span id="resultadodeut"></span></p>
+</body>
+</html>	
